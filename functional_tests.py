@@ -2,7 +2,8 @@ from selenium import webdriver
 
 # 철환이는 새로나온 개멋진 온라인 to-do app이 있다는 소식을 들었다.
 # 철환이는 그 홈피를 확인하러간다.
-browser = webdriver.Chrome("/Users/chulkim/Downloads/chromedriver")
+# browser = webdriver.Chrome("/Users/chulkim/Downloads/chromedriver")
+browser = webdriver.Chrome("D:\\chromedriver_win32\\chromedriver")
 browser.get("http://localhost:8000")
 
 # 철환이는 그 페이지의 타이틀과 헤더에 to-do lists 라고 명시된 것을 알아챈다.
@@ -28,4 +29,3 @@ assert "To-Do" in browser.title
 
 # 철환이는 만족했고 자러갔다..
 browser.quit()
-
