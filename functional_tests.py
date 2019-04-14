@@ -46,7 +46,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1: Buy gram' for row in rows)
+            any(row.text == '1: Buy gram' for row in rows),
+            "테이블에 새로운 to-do item이 나타나지 않았습니다.."
         )
 
         # 여전히 다른 아이템을 추가할 수 있는 텍스트 박스가 존재한다.
