@@ -15,6 +15,11 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_a_list_and_retrieve_it_later(self):
         # 철환이는 쩌는 새로운 온라인 to-do app이 있다는 것을 들었다.
         # 그래서 그 홈페이지를 확인하러 갔다.
@@ -42,10 +47,8 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Buy gram" 이 to-do list 테이블 내의 하나의 아이템으로 생긴다.
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
-
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy gram', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Buy gram')
+    
 
         # 여전히 다른 아이템을 추가할 수 있는 텍스트 박스가 존재한다.
         # 철환이는 그램을 사고 윈도우를 깔 것이라고 엔터친다.
@@ -56,13 +59,8 @@ class NewVisitorTest(unittest.TestCase):
         
         
         # 페이지가 또 업데이트 되면, 방금 전에 입력한 데이터도 같이 리스트에 보인다.
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy gram', [row.text for row in rows])
-        self.assertIn(
-            '2: Install Windows on gram!',
-            [row.text for row in rows]
-        )
+        self.check_for_row_in_list_table('1: Buy gram')
+        self.check_for_row_in_list_table('2: Install Windows on gram!')
         #[...]
         self.fail("Finish the test!!!")
 
