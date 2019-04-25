@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 import time
 import unittest
 
-
 class NewVisitorTest(unittest.TestCase):
 
     def setUp(self):
@@ -16,7 +15,7 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
 
     def check_for_row_in_list_table(self, row_text):
-        table = self.find_element_by_id('id_list_table')
+        table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
 
@@ -41,19 +40,17 @@ class NewVisitorTest(unittest.TestCase):
         )
 
         # 철환이는 "그램을 살거야" 라고 텍스트 박스에 입력한다. (철환이의 취미는 갖고 싶은게 있으면 막 지른다..(??))
-        inputbox.send_keys("1: Buy gram")
+        inputbox.send_keys("Buy gram")
 
         # 철환이가 엔터를 치면 그 페이지가 업데이트 되고 업데이트가 되고 난 페이지에는
         # "1: Buy gram" 이 to-do list 테이블 내의 하나의 아이템으로 생긴다.
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
-        self.check_for_row_in_list_table('1: Buy gram')
-    
+        time.sleep(1)    
 
         # 여전히 다른 아이템을 추가할 수 있는 텍스트 박스가 존재한다.
         # 철환이는 그램을 사고 윈도우를 깔 것이라고 엔터친다.
         inputbox = self.browser.find_element_by_id('id_new_item')
-        inputbox.send_keys('2: Install Windows on gram!')
+        inputbox.send_keys('Install Windows on gram!')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
         
