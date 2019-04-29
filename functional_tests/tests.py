@@ -130,8 +130,6 @@ class NewVisitorTest(LiveServerTestCase):
 
         # 만족해서 자러간다.
 
-        
-
 
 
 
