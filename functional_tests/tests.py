@@ -124,7 +124,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotEqual(byungchul_list_url, chulphan_list_url)
 
         # 다시, 철환이의 리스트의 흔적이 없는지 본다.
-        page_text = self.browser.find_element_by_tagname('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy gram', page_text)
         self.assertIn('Buy Coffee', page_text)
 
