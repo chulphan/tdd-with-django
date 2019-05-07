@@ -61,7 +61,6 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_in_list_table('2: Install Windows on gram!')
         self.wait_for_row_in_list_table('1: Buy gram')
         #[...]
-        self.fail("Finish the test!!!")
 
     def wait_for_row_in_list_table(self, row_text):
         start_time = time.time()
@@ -75,16 +74,6 @@ class NewVisitorTest(LiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
-
-    def test_can_start_a_list_for_one_user(self):
-        # 철환이는 쩌는 새로운 온라인 to-do app이 있다는 것을 들었다.
-        # 그래서 그 홈페이지를 확인하러 갔다.
-        # [...]
-        # 페이지가 또 업데이트 되면, 방금 전에 입력한 데이터도 같이 리스트에 보인다.
-        self.wait_for_row_in_list_table('2: Install Windows on gram!')
-        self.wait_for_row_in_list_table('1: Buy gram')
-
-        # 철환이는 만족했고 자러갔다.
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
         # 철환이는 새로운 to-do list를 시작한다.
@@ -129,6 +118,23 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Buy Coffee', page_text)
 
         # 만족해서 자러간다.
+
+    def test_layout_and_styling(self):
+        # 철환이는 그 홈페이지를 방문한다.
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # 철환이는 input box가 나이스하게 중앙에 위치한걸 알아차린다.
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('testing')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: testing')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )
 
 
 
