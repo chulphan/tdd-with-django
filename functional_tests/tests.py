@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
@@ -8,7 +8,7 @@ import unittest
 
 MAX_WAIT = 10
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome(
@@ -16,6 +16,7 @@ class NewVisitorTest(LiveServerTestCase):
         # self.browser = webdriver.Firefox()
 
     def tearDown(self):
+        self.browser.refresh()
         self.browser.quit()
 
     def check_for_row_in_list_table(self, row_text):
@@ -90,6 +91,7 @@ class NewVisitorTest(LiveServerTestCase):
         # 새로운 유저인 병철이와 형언이가 그 사이트에 방문한다.
 
         ## 우리는 철환이가 쿠키 등으로 부터 온 정보가 없는 새로운 브라우저 세션을 이용한다.
+        self.browser.refresh()
         self.browser.quit()
         self.browser =  webdriver.Chrome(
             "C:\\Users\\chulkim\\Downloads\\chromedriver_win32\\chromedriver.exe")
