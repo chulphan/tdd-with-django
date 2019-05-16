@@ -9,11 +9,14 @@ import os
 
 MAX_WAIT = 10
 
+DESKTOP_CHROME_DRIVER_PATH = "D:\\chromedriver_win32\\chromedriver.exe"
+LAPTOP_CHROME_DRIVER_PATH =  "C:\\Users\\chulkim\\Downloads\\chromedriver_win32\\chromedriver.exe"
+
 class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome(
-            "C:\\Users\\chulkim\\Downloads\\chromedriver_win32\\chromedriver.exe")
+            DESKTOP_CHROME_DRIVER_PATH)
         staging_server = os.environ.get('STAGING_SERVER')
         if staging_server:
             self.live_server_url = 'http://' + staging_server
