@@ -20,6 +20,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
         staging_server = os.environ.get('STAGING_SERVER')
         if staging_server:
             self.live_server_url = 'http://' + staging_server
+        else:
+            self.live_server_url = 'http://' + 'localhost:8000'
         # self.browser = webdriver.Firefox()
 
     def tearDown(self):
@@ -34,12 +36,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # 철환이는 쩌는 새로운 온라인 to-do app이 있다는 것을 들었다.
         # 그래서 그 홈페이지를 확인하러 갔다.
-        current_url = ""
-        if self.live_server_url:
-            current_url = self.live_server_url
-        else:
-            current_url = "http://localhost:8000"
-        self.browser.get(current_url)
+        self.browser.get(self.live_server_url)
 
         # 철환이는 그 홈페이지의 제목과 헤더에 to-do lists로 명시되어있는 것을
         # 알아차렸다.
