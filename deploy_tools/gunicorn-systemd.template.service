@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn server for SITENAME
+
+[Service]
+Restart=on-failure
+User=ubuntu
+WorkingDirectory=/home/ubuntu/srv/SITENAME/source
+ExecStart=/home/ubuntu/srv/SITENAME/gunicorn \
+    --bind unix:/srv/SITENAME/SITENAME.socket \
+    tddtutorial.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
