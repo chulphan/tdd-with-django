@@ -18,7 +18,7 @@ def view_list(request, list_id):
             item = Item(text=request.POST['item_text'], list=list_)
             item.full_clean()
             item.save()
-            return redirect(f'/lists/{list_.id}/')
+            return redirect(list_)
         except ValidationError:
             error = '당신은 빈 아이템을 가질 수 없어요^^'
     return render(request, 'list.html', {'list': list_, 'error': error})
@@ -33,6 +33,6 @@ def new_list(request):
         list_.delete()
         error = '당신은 빈 아이템을 가질 수 없어요^^'
         return render(request, 'home.html', {'error': error})
-    return redirect(f'/lists/{list_.id}/')
+    return redirect(list_)
 
     
