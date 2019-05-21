@@ -30,9 +30,9 @@ class ItemValidationTest(FunctionalTest):
             self.browser.find_element_by_css_selector('.has-error').text,
             "당신은 빈 아이템을 가질 수 없어요^^"
         ))
-        
+
         # 그리고 철환이는 규칙에 맞게 어떠한 텍스트를 채운다.
-        self.browser.find_element_by_id('id_new_item').send_keys('Write someting')
+        self.browser.find_element_by_id('id_new_item').send_keys('Write something')
         self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy Pencil')
         self.wait_for_row_in_list_table('2: Write something')

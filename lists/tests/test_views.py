@@ -3,6 +3,7 @@ from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from django.template.loader import render_to_string
+from django.utils.html import escape
 from lists.views import home_page
 from lists.models import Item, List
 
@@ -67,6 +68,17 @@ class ListViewTest(TestCase):
         )
         self.assertRedirects(response, f'/lists/{correct_list.id}/')
 
+    def test_validation_errors_end_up_on_lists_page(self):
+        list_ = List.objects.create()
+        response = self.client.post(
+            f'/lists/{list_.id}/',
+            data={'item_text': ''}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'list.html')
+        expected_error = escape('당신은 빈 아이템을 가질 수 없어요^^')
+        self.assertContains(response, expected_error)
+
 
 class NewListTest(TestCase):
     def test_can_save_a_POST_request(self):
@@ -84,7 +96,7 @@ class NewListTest(TestCase):
         response = self.client.post('/lists/new', data={'item_text': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
-        expected_error = '당신은 빈 아이템을 가질 수 없어요^^'
+        expected_error = escape('당신은 빈 아이템을 가질 수 없어요^^')
         self.assertContains(response, expected_error)
 
     def test_invalid_list_items_arent_saved(self):
