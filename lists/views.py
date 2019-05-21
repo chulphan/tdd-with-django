@@ -1,5 +1,6 @@
  # -*- encoding: utf-8 -*-
 from django.shortcuts import render, redirect
+from lists.forms import ItemForm
 from lists.models import Item, List
 from django.core.exceptions import ValidationError
 
@@ -7,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 
 def home_page(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'form': ItemForm()})
 
 def view_list(request, list_id):
     list_ = List.objects.get(id=list_id)
