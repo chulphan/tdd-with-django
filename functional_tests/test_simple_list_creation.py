@@ -24,7 +24,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn("To-Do", header_text)
 
         # 철환이는 당장 to-do 아이템을 입력하러 갔다.
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         self.assertEqual(
             inputbox.get_attribute('placeholder'),
             'Enter a to-do item'
@@ -39,7 +39,7 @@ class NewVisitorTest(FunctionalTest):
         self.wait_for_row_in_list_table('1: Buy gram')
         # 여전히 다른 아이템을 추가할 수 있는 텍스트 박스가 존재한다.
         # 철환이는 그램을 사고 윈도우를 깔 것이라고 엔터친다.
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Install Windows on gram!')
         inputbox.send_keys(Keys.ENTER)
         
@@ -52,7 +52,7 @@ class NewVisitorTest(FunctionalTest):
     def test_multiple_users_can_start_lists_at_different_urls(self):
         # 철환이는 새로운 to-do list를 시작한다.
         self.browser.get(self.live_server_url)
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Buy gram')
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy gram')
@@ -77,7 +77,7 @@ class NewVisitorTest(FunctionalTest):
 
         # 병철이는 새로운 아이템을 입력하는 것으로 새로운 리스트를 시작한다.
         # 병철이는 철환이보다 흥미가 없어보인다...ㅠㅠ
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys('Buy Coffee')
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy Coffee')
