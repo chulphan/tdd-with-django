@@ -6,6 +6,10 @@ from lists.models import Item
 EMPTY_ITEM_ERROR = '당신은 빈 아이템을 가질 수 없어요^^'
 
 class ItemForm(forms.models.ModelForm):
+
+    def save(self, for_list):
+        self.instance.list = for_list
+        return super().save()
     
     class Meta:
         model = Item
