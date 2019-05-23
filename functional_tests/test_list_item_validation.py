@@ -4,6 +4,9 @@ from unittest import skip
 from .base import FunctionalTest
 
 class ItemValidationTest(FunctionalTest):
+
+    def get_error_element(self):
+        return self.browser.find_element_by_css_selector('.has-error')
    
     def test_cannot_add_empty_list_items(self):
         # 철환이는 홈페이지에 들어갔고, 실수로 빈 list item 을 submit 하기를 시도한다.
@@ -13,7 +16,7 @@ class ItemValidationTest(FunctionalTest):
 
         # 홈페이지는 새로고침 됐고, list item은 빈 칸이어서는 안된다는 에러 메세지가 나타난다.
         self.wait_for(lambda: self.assertEqual(  
-            self.browser.find_element_by_css_selector('.has-error').text,
+            self.get_error_element().text,
             "당신은 빈 아이템을 가질 수 없어요^^"
         ))
 
@@ -27,7 +30,7 @@ class ItemValidationTest(FunctionalTest):
 
         # 철환이는 리스트 페이지에서 똑같은 경고를 받는다.
         self.wait_for(lambda: self.assertEqual(  
-            self.browser.find_element_by_css_selector('.has-error').text,
+            self.get_error_element().text,
             "당신은 빈 아이템을 가질 수 없어요^^"
         ))
 
@@ -80,6 +83,27 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys(Keys.ENTER)
 
         self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            '이미 리스트 내에 있습니다^^'
+            self.get_error_element().text,
+            '이미 목록 내에 존재하는 아이템입니다^^'
+        ))
+
+    def test_error_messages_are_cleared_on_input(self):
+        # 철환이는 list를 작성하기 시작했고 유효성 에러(ValidationError)를 일으킨다. (중복된 아이템을 추가하려고 해서)
+        self.browser.get(self.live_server_url)
+        self.get_item_input_box().send_keys('Banter too thick')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: Banter too thick')
+        self.get_item_input_box().send_keys('Banter too thick')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+
+        self.wait_for(lambda: self.assertTrue(
+            self.get_error_element().is_displayed()
+        ))
+
+        # 철환이는 input-box 내에 에러를 없애기 위해서 타이핑을 시작한다.
+        self.get_item_input_box().send_keys('ㅅ')
+
+        # 철환이는 에러메세지가 없어진 것을 보고 기뻐했다
+        self.wait_for(lambda: self.assertFalse(
+            self.get_error_element().is_displayed()
         ))

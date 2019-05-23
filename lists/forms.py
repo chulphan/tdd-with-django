@@ -1,6 +1,7 @@
  # -*- encoding: utf-8 -*-
 
 from django import forms
+from django.core.exceptions import ValidationError
 from lists.models import Item
 
 EMPTY_ITEM_ERROR = '당신은 빈 아이템을 가질 수 없어요^^'
@@ -37,3 +38,6 @@ class ExistingListItemForm(ItemForm):
         except ValidationError as e:
             e.error_dict = {'text': [DUPLICATE_ITEM_ERROR]}
             self._update_errors(e)
+
+    def save(self):
+        return forms.models.ModelForm.save(self)
