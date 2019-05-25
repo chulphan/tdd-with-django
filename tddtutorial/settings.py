@@ -27,7 +27,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ["chulphan.me", ".ap-northeast-2.compute.amazonaws.com"]
+ALLOWED_HOSTS = ["chulphan.me"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
