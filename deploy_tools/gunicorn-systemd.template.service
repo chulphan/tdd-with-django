@@ -5,7 +5,7 @@ Description=Gunicorn server for SITENAME
 Restart=on-failure
 User=ubuntu
 WorkingDirectory=/home/ubuntu/srv/SITENAME/source
-ExecStart=/home/ubuntu/srv/SITENAME/gunicorn \
+ExecStart=/home/ubuntu/srv/SITENAME/virtualenv/bin/gunicorn \
     --bind unix:/srv/SITENAME/SITENAME.socket \
     tddtutorial.wsgi:application
 
