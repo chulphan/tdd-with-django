@@ -23,7 +23,6 @@ def _get_latest_source(source_folder):
         run(f'cd {source_folder} && git fetch')
     else:
         run(f'git clone {REPO_URL} {source_folder}')
-    
     current_commit = local('git log -n 1 --format=%H', capture=True)
     run(f'cd {source_folder} && git reset --hard {current_commit}')
 
@@ -43,7 +42,10 @@ def _update_settings(source_folder, site_name):
 
 def _update_virtualenv(source_folder):
     virtualenv_folder = source_folder + '/../virtualenv'
-    
+
+    if not exists(virtualenv_folder + '/bin/pip'):
+        run(f'python3.6 -m venv {virtualenv_folder}')
+    run(f'{virtualenv_folder}/bin/pip install -r {source_folder}/requirements.txt')
     if not exists(virtualenv_folder):
         run(f'mkdir -p {virtualenv_folder}')
 
@@ -55,11 +57,11 @@ def _update_virtualenv(source_folder):
 def _update_static_files(source_folder):
     run(
         f'cd {source_folder}'
-        ' && python manage.py runserver collectstatic --noinput '
+         ' && ../virtualenv/bin/python manage.py collectstatic --noinput'
     )
 
 def _update_database(source_folder):
     run(
-        f'cd{source_folder}'
-        ' && python manage.py migrate --noinput'
+        f'cd {source_folder}'
+        ' && ../virtualenv/bin/python manage.py migrate --noinput'
     )
