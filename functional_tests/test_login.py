@@ -1,11 +1,5 @@
 from django.core import mail
-from django.core.mail import send_mail
 from selenium.webdriver.common.keys import Keys
-from django.test import override_settings
-import re
-import time
-import uuid
-from accounts.models import Token
 from .base import FunctionalTest
 
 TEST_EMAIL = 'loveskywhy@naver.com'
