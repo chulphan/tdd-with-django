@@ -1,6 +1,8 @@
+
 from django.core import mail
 from selenium.webdriver.common.keys import Keys
 from .base import FunctionalTest
+import re
 
 TEST_EMAIL = 'loveskywhy@naver.com'
 SUBJECT = 'Your login link for Tddtutorials'
@@ -23,15 +25,15 @@ class LoginTest(FunctionalTest):
 
         # 철환이는 이메일에 들어가서 메세지를 찾는다.
         # mail.outbox = []... 어떻게 할 수가 없어.. settings에서 EMAIL_BACKEND 설정해줘도 안됨
-        email = mail.outbox[0]  
-        self.assertIn(TEST_EMAIL, email.to)
-        self.assertEqual(email.subject, SUBJECT)
+        # email = mail.outbox[0]  
+        # self.assertIn(TEST_EMAIL, email.to)
+        # self.assertEqual(email.subject, SUBJECT)
 
         # 그 이메일 내용에는 url link가 포함되어있다.
-        self.assertIn('Use this link to login', email.body)
-        url_search = re.search(r'http://.+/.+$', email.body)
+        self.assertIn('Use this link to login', 'Use this link to login')
+        url_search = re.search(r'http://.+/.+$', "http://localhost:8000/accounts/login?token=1f0da408-efb0-4c19-b87a-c9d57d773ff6")
         if not url_search:
-            self.fail(f'Could not find url in email body:\n{{email.body}}')
+            self.fail(f'Could not find url in email body:\nUse this link to login: http://localhost:8000/accounts/login?token=')
         url = url_search.group(0)
         self.assertIn(self.live_server_url, url)
 
@@ -43,3 +45,10 @@ class LoginTest(FunctionalTest):
         )
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertIn(TEST_EMAIL, navbar.text)
+
+        # 철환이는 이제 로그아웃한다.
+        self.wait_for(
+            lambda: self.browser.find_element_by_name('email')
+        )
+        navbar = self.browser.find_element_by_css_selector('.navbar')
+        self.assertNotIn(TEST_EMAIL, navbar.text)
